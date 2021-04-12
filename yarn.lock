@@ -4452,6 +4452,15 @@
     telejson "^3.2.0"
     util-deprecate "^1.0.2"
 
+"@superset-ui/chart-controls@^0.15.2":
+  version "0.15.19"
+  resolved "https://registry.yarnpkg.com/@superset-ui/chart-controls/-/chart-controls-0.15.19.tgz#925699ce8f82427d8281aafd251dc953dbecf4af"
+  integrity sha512-Bt5vU/k3MvxRpf3Qn44ZMbNmRQrJ1rZ9/dkh9z0Iq5rqS74yNAqCQpoO25xYj8ymP7bjnlKluOH6lR5OcywbBg==
+  dependencies:
+    "@superset-ui/core" "0.15.19"
+    lodash "^4.17.15"
+    prop-types "^15.7.2"
+
 "@superset-ui/commit-config@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@superset-ui/commit-config/-/commit-config-0.0.9.tgz#f0149945185e0908e14fec46bdc1498aa026ada7"
@@ -4464,6 +4473,40 @@
     conventional-changelog "^3.0.6"
     conventional-changelog-cli "^2.0.12"
     cz-conventional-changelog "^2.1.0"
+
+"@superset-ui/core@0.15.19", "@superset-ui/core@^0.15.2":
+  version "0.15.19"
+  resolved "https://registry.yarnpkg.com/@superset-ui/core/-/core-0.15.19.tgz#45f3d587c950babc906177c78cb37637b531b31c"
+  integrity sha512-g27Y6WJYYeUpNz6/gbILvbxzACGjI+3bgN/4ao+XhZKKwpa5MdjjWwcrc6K2AbNRS/zAM45DO7ATy4bWPII8PA==
+  dependencies:
+    "@babel/runtime" "^7.1.2"
+    "@emotion/core" "^10.0.28"
+    "@emotion/styled" "^10.0.27"
+    "@types/d3-format" "^1.3.0"
+    "@types/d3-interpolate" "^1.3.1"
+    "@types/d3-scale" "^2.1.1"
+    "@types/d3-time" "^1.0.9"
+    "@types/d3-time-format" "^2.1.0"
+    "@types/lodash" "^4.14.149"
+    "@types/rison" "0.0.6"
+    "@types/seedrandom" "^2.4.28"
+    "@vx/responsive" "^0.0.197"
+    csstype "^2.6.4"
+    d3-format "^1.3.2"
+    d3-interpolate "^1.4.0"
+    d3-scale "^3.0.0"
+    d3-time "^1.0.10"
+    d3-time-format "^2.2.0"
+    emotion-theming "^10.0.27"
+    fetch-retry "^4.0.1"
+    jed "^1.1.1"
+    lodash "^4.17.11"
+    pretty-ms "^7.0.0"
+    react-error-boundary "^1.2.5"
+    reselect "^4.0.0"
+    rison "^0.1.1"
+    seedrandom "^3.0.5"
+    whatwg-fetch "^3.0.0"
 
 "@superset-ui/core@file:packages/superset-ui-core/src":
   version "0.0.0"
@@ -4866,6 +4909,14 @@
   version "26.0.16"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.16.tgz#b47abd50f6ed0503f589db8e126fc8eb470cf87c"
   integrity sha512-Gp12+7tmKCgv9JjtltxUXokohCAEZfpJaEW5tn871SGRp8I+bRWBonQO7vW5NHwnAHe5dd50+Q4zyKuN35i09g==
+  dependencies:
+    jest-diff "^26.0.0"
+    pretty-format "^26.0.0"
+
+"@types/jest@^26.0.0":
+  version "26.0.22"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.22.tgz#8308a1debdf1b807aa47be2838acdcd91e88fbe6"
+  integrity sha512-eeWwWjlqxvBxc4oQdkueW5OF/gtfSceKk4OnOAGlUSwS/liBRtZppbJuz1YkgbrbfGOoeBHun9fOvXnjNwrSOw==
   dependencies:
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
@@ -5712,6 +5763,17 @@
     lodash "^4.17.10"
     prop-types "^15.6.1"
     resize-observer-polyfill "1.5.0"
+
+"@vx/responsive@^0.0.197":
+  version "0.0.197"
+  resolved "https://registry.yarnpkg.com/@vx/responsive/-/responsive-0.0.197.tgz#e3ef1b7c2cdf3be8f579d618df637c0615f41586"
+  integrity sha512-Qv15PJ/Hy79LjyfJ/9E8z+zacKAnD43O2Jg9wvB6PFSNs73xPEDy/mHTYxH+FZv94ruAE3scBO0330W29sQpyg==
+  dependencies:
+    "@types/lodash" "^4.14.146"
+    "@types/react" "*"
+    lodash "^4.17.10"
+    prop-types "^15.6.1"
+    resize-observer-polyfill "1.5.1"
 
 "@vx/responsive@^0.0.199":
   version "0.0.199"
@@ -14860,7 +14922,7 @@ jest@^25.5.4:
     import-local "^3.0.2"
     jest-cli "^25.5.4"
 
-jest@^26.6.3:
+jest@^26.0.1, jest@^26.6.3:
   version "26.6.3"
   resolved "https://registry.yarnpkg.com/jest/-/jest-26.6.3.tgz#40e8fdbe48f00dfa1f0ce8121ca74b88ac9148ef"
   integrity sha512-lGS5PXGAzR4RF7V5+XObhqz2KZIDUA1yD0DG6pBVmy10eh0ZIXQImRuzocsI/N2XZ1GrLFwTS27In2i2jlpq1Q==
@@ -23337,9 +23399,9 @@ xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
 y18n@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.1.tgz#6d15fba884c08679c0d77e88e7759e811e07fa41"
-  integrity sha1-bRX7qITAhnnA136I53WegR4H+kE=
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/y18n/-/y18n-3.2.2.tgz#85c901bd6470ce71fc4bb723ad209b70f7f28696"
+  integrity sha512-uGZHXkHnhF0XeeAPgnKfPv1bgKAYyVvmNL1xlKsPYZPaIHxGti2hHqvOCQv71XMsLxu1QjergkqogUnms5D3YQ==
 
 y18n@^4.0.0:
   version "4.0.0"
