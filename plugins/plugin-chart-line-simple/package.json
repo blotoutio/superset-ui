@@ -1,0 +1,38 @@
+{
+  "name": "@blotoutio/plugin-chart-line-simple",
+  "version": "1.0.9",
+  "description": "Superset Chart - Line Simple",
+  "sideEffects": false,
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "files": [
+    "esm",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blotoutio/superset-ui.git"
+  },
+  "keywords": [
+    "superset"
+  ],
+  "author": "Blotout",
+  "license": "MIT",
+  "homepage": "https://github.com/blotoutio/superset-ui#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@superset-ui/chart-controls": "^0.17.0",
+    "@superset-ui/core": "^0.17.0",
+    "lodash": "^4.17.11",
+    "moment": "^2.29.1"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "jest": "^26.0.1"
+  }
+}

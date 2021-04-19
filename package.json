@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "node ./scripts/build.js",
+    "bo:build": "node ./scripts/boBuild.js",
     "build:assets": "node ./scripts/copyAssets.js",
     "babel": "yarn build --no-type",
     "demo": "cd packages/superset-ui-demo && yarn demo:build",
