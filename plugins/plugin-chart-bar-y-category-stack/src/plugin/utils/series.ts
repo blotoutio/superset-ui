@@ -61,18 +61,20 @@ export function extractGroupbyLabel({
     .join(', ');
 }
 
-export function extractColLabel({
+export function extractBreakdownbyLabel({
   datum,
-  series,
+  columns,
   numberFormatter,
   timeFormatter,
 }: {
   datum: DataRecord;
-  series: string;
+  columns: string[];
   numberFormatter?: NumberFormatter;
   timeFormatter?: TimeFormatter;
 }): string {
-  return formatSeriesName(datum[series], { numberFormatter, timeFormatter });
+  return columns
+    .map(val => formatSeriesName(datum[val], { numberFormatter, timeFormatter }))
+    .join(', ');
 }
 
 export function onlyUnique(value: any, index: any, self: any) {
@@ -83,83 +85,103 @@ export function hasNotNull(value: any, index: any, self: any) {
   return !value.includes(', null') && !value.includes('<NULL>');
 }
 
-const seriesLabel = {
-  normal: {
-    show: true,
-    textBorderColor: '#333',
-    textBorderWidth: 2,
+let config = {
+  rotate: 90,
+  align: 'left',
+  verticalAlign: 'middle',
+  position: 'insideBottom',
+  distance: 15,
+};
+
+let app = { config };
+
+var labelOption = {
+  show: true,
+  position: app.config.position,
+  distance: app.config.distance,
+  align: app.config.align,
+  verticalAlign: app.config.verticalAlign,
+  rotate: app.config.rotate,
+  formatter: '{c}  {name|{a}}',
+  fontSize: 16,
+  rich: {
+    name: {},
   },
 };
 
 export function getSeriesData({
   data,
-  series,
   groupkeys,
   groupby,
-  metrics,
-  colkeys,
+  metric,
+  columnskeys,
+  columns,
 }: {
   data: any;
-  series: string;
   groupkeys: string[];
   groupby: string[];
-  metrics: string[];
-  colkeys: string[];
+  metric: string;
+  columnskeys: string[];
+  columns: string[];
 }) {
-  if (series) {
-    return colkeys.map((datum: any) => {
-      let chartdata: any = [];
-      groupkeys.map((val: any) => {
-        let values = val.split(',');
-        let keyValObj = Object.fromEntries(groupby.map((_, i) => [groupby[i], values[i].trim()]));
-        keyValObj[series] = datum;
-        let filterData = findByMatchingPropertiesValues(data, keyValObj);
-        const label = typeof metrics[0] == 'string' ? metrics[0] : metrics[0]['label'];
-        let result = filterData.map((value: any) => value[label]);
-        if (result.length > 0) {
-          chartdata = chartdata.concat(result);
+  if (columnskeys.length > 0) {
+    let finalresult: any = [];
+    columnskeys.forEach((datum: any, key) => {
+      let result: any = [];
+      const columnValues = datum.split(',');
+      const columnObj = Object.fromEntries(
+        groupby.map((_, i) => [columns[i], columnValues[i].trim()]),
+      );
+
+      groupkeys.forEach((datum1: any, key1) => {
+        const groupValues = datum1.split(',');
+        const groupObj = Object.fromEntries(
+          groupby.map((_, i) => [groupby[i], groupValues[i].trim()]),
+        );
+        const filterobj = { ...columnObj, ...groupObj };
+        const resultObj = findByMatchingPropertiesValues(data, filterobj);
+        if (resultObj[0] != undefined) {
+          const label = typeof metric == 'string' ? metric : metric['label'];
+          result.push(resultObj[0][label]);
         } else {
-          chartdata.push(null);
+          result.push(0);
         }
       });
-
-      return {
+      let obj = {
         name: datum,
         type: 'bar',
-        data: chartdata,
-        label: seriesLabel,
+        stack: 'total',
+        label: {
+          show: true,
+        },
+        data: result,
       };
+      finalresult.push(obj);
     });
+
+    return finalresult;
   }
 
-  return groupkeys.map((datum: any) => {
-    let result = [];
-    let values = datum.split(',');
+  let result: number[] = [];
+  groupkeys.map(val => {
+    let values = groupby.length > 1 ? val.split(',') : [val];
     let keyValObj = Object.fromEntries(groupby.map((_, i) => [groupby[i], values[i].trim()]));
-    result = findByMatchingProperties(data, keyValObj, metrics);
+    let filterData = findByMatchingPropertiesValues(data, keyValObj);
+    const label = typeof metric == 'string' ? metric : metric['label'];
+    result.push(filterData[0][label]);
+  });
 
-    return {
-      name: datum,
+  return [
+    {
       type: 'bar',
+      stack: 'total',
+      label: {
+        show: true,
+      },
       data: result,
-      label: seriesLabel,
-    };
-  });
+    },
+  ];
 }
-
-const findByMatchingProperties = (set: any, properties: any, metrics: string[]) => {
-  return set.map((entry: any) => {
-    let result = Object.keys(properties).every(function (key) {
-      return entry[key] === properties[key];
-    });
-    if (result) {
-      const label = typeof metrics[0] == 'string' ? metrics[0] : metrics[0]['label'];
-      return entry[label];
-    } else {
-      return null;
-    }
-  });
-};
 
 function findByMatchingPropertiesValues(set: any, properties: any) {
   return set.filter((entry: any) => {

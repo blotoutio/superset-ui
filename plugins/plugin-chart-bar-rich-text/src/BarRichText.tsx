@@ -17,8 +17,8 @@
  * under the License.
  */
 import React, { useRef, useEffect, createRef } from 'react';
-import { styled } from '@superset-ui/core';
-import echarts from 'echarts';
+import { styled, getSequentialSchemeRegistry } from '@superset-ui/core';
+import { ECharts, init } from 'echarts';
 import { BarRichTextProps, BarRichTextStylesProps } from './types';
 
 // The following Styles component is a <div> element, which has been styled using Emotion
@@ -29,8 +29,16 @@ import { BarRichTextProps, BarRichTextStylesProps } from './types';
 // https://github.com/apache-superset/superset-ui/blob/master/packages/superset-ui-core/src/style/index.ts
 
 const Styles = styled.div<BarRichTextStylesProps>`
+  padding: ${({ theme }) => theme.gridUnit * 4}px;
+  border-radius: ${({ theme }) => theme.gridUnit * 2}px;
   height: ${({ height }) => height};
   width: ${({ width }) => width};
+
+  h3 {
+    /* You can use your props to control CSS! */
+    font-size: ${({ theme, headerFontSize }) => theme.typography.sizes[headerFontSize]};
+    font-weight: ${({ theme, boldText }) => theme.typography.weights[boldText ? 'bold' : 'normal']};
+  }
 `;
 
 /**
@@ -47,26 +55,52 @@ export default function BarRichText(props: BarRichTextProps) {
   const { echartOptions, height, width } = props;
 
   const rootElem = createRef<HTMLDivElement>();
-  const chartRef = useRef<echarts.ECharts>();
+  const chartRef = useRef<ECharts>();
 
   // Often, you just want to get a hold of the DOM and go nuts.
   // Here, you can do that with createRef, and the useEffect hook.
   useEffect(() => {
     if (!rootElem.current) return;
     if (!chartRef.current) {
-      chartRef.current = echarts.init(rootElem.current);
+      chartRef.current = init(rootElem.current);
     }
     chartRef.current.setOption(echartOptions, true);
   }, [echartOptions]);
 
   useEffect(() => {
-    if (chartRef.current) {
-      chartRef.current.resize({ width, height });
+    const colorScale = getSequentialSchemeRegistry().get(props.linearColorScheme);
+    if (!rootElem.current) return;
+    if (!chartRef.current) {
+      chartRef.current = init(rootElem.current);
     }
-  }, [width, height]);
+    echartOptions.color = colorScale?.colors;
+
+    echartOptions.xAxis.name = props.xAxisLabel;
+    echartOptions.yAxis.name = props.yAxisLabel;
+
+    echartOptions.legend.show = props.showLegend;
+    echartOptions.legend.type = props.legend;
+
+    let yaxisHeight = height;
+      if(echartOptions.legend.data.length > 0){
+        yaxisHeight = (echartOptions.legend.data.length * echartOptions.series[0]['data'].length)*5;
+      }
+      console.log(echartOptions.series[0]['data'].length,echartOptions.legend.data.length)
+      yaxisHeight = yaxisHeight < height ? height : yaxisHeight;
+      yaxisHeight = yaxisHeight > 5000 ? 5000 : yaxisHeight;
+      
+      chartRef.current.resize({ width, height:yaxisHeight });
+    
+    chartRef.current.setOption(echartOptions, true);
+  }, [echartOptions]);
 
   return (
-    <Styles ref={rootElem} boldText={props.boldText}
-    headerFontSize={props.headerFontSize} height={height} width={width} />
+    <Styles
+      ref={rootElem}
+      boldText={props.boldText}
+      headerFontSize={props.headerFontSize}
+      height={height}
+      width={width}
+    ></Styles>
   );
 }

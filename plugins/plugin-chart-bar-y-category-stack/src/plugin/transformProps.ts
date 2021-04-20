@@ -17,16 +17,16 @@
  * under the License.
  */
 import { ChartProps, DataRecord } from '@superset-ui/core';
-import { BarRichTextProps } from '../types';
+import { BarYCategoryStackProps } from '../types';
 import {
   extractGroupbyLabel,
+  extractBreakdownbyLabel,
   onlyUnique,
-  extractColLabel,
   getSeriesData,
   hasNotNull,
 } from './utils/series';
 
-export default function transformProps(chartProps: ChartProps): BarRichTextProps {
+export default function transformProps(chartProps: ChartProps): BarYCategoryStackProps {
   /**
    * This function is called after a successful response has been
    * received from the chart data endpoint, and is used to transform
@@ -34,7 +34,7 @@ export default function transformProps(chartProps: ChartProps): BarRichTextProps
    *
    * The transformProps function is also quite useful to return
    * additional/modified props to your data viz component. The formData
-   * can also be accessed from your BarRichText.tsx file, but
+   * can also be accessed from your BarYCategoryStack.tsx file, but
    * doing supplying custom props here is often handy for integrating third
    * party libraries that rely on specific props.
    *
@@ -60,8 +60,8 @@ export default function transformProps(chartProps: ChartProps): BarRichTextProps
   const data: DataRecord[] = queriesData[0].data || [];
   const {
     groupby,
-    series,
-    metrics,
+    columns,
+    metric,
     boldText,
     headerFontSize,
     headerText,
@@ -72,50 +72,50 @@ export default function transformProps(chartProps: ChartProps): BarRichTextProps
     showLegend,
   } = formData;
 
-  if (groupby.includes(series)) {
-    throw new Error("Can't have overlap between Series and Breakdowns");
-  }
-
   const groupkeys = data.map(datum => extractGroupbyLabel({ datum, groupby })).filter(onlyUnique);
-  const colkeys = data
-    .map(datum => extractColLabel({ datum, series }))
-    .filter(onlyUnique)
-    .filter(hasNotNull);
-  const transformedData = getSeriesData({ data, series, groupkeys, groupby, metrics, colkeys });
-  console.log(groupkeys, colkeys, transformedData);
-  const echartOptions = {
+  const columnskeys =
+    columns && columns.length > 0
+      ? data
+          .map(datum => extractBreakdownbyLabel({ datum, columns }))
+          .filter(onlyUnique)
+          .filter(hasNotNull)
+      : [];
+  const label = typeof metric == 'string' ? metric : metric['label'];
+  const legends = columns && columns.length > 0 ? columnskeys : [label];
+  const transformedData = getSeriesData({
+    data,
+    groupkeys,
+    groupby,
+    metric,
+    columnskeys,
+    columns,
+  });
+
+  let echartOptions = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        type: 'shadow',
+        // Use axis to trigger tooltip
+        type: 'shadow', // 'shadow' as default; can also be 'line' or 'shadow'
       },
     },
-    grid: {
-      bottom: '150px',
-    },
     legend: {
-      data: colkeys,
+      data: legends,
+    },
+    grid: {
+      left: '50px',
+      right: '50px',
+      bottom: '10%',
+      containLabel: true,
     },
     xAxis: {
       type: 'value',
-      name: '',
-      axisLabel: {
-        formatter: '{value}',
-      },
     },
     yAxis: {
       type: 'category',
-      inverse: true,
+      data: groupkeys,
       scale: true,
       boundaryGap: ['1%', '1%'],
-      data: groupkeys,
-      axisLabel: {
-        show: true,
-        interval: 0,
-        formatter: (value: string) => {
-          return value.length > 9 ? value.slice(0, 9) + '...' : value;
-        },
-      },
     },
     series: transformedData,
   };

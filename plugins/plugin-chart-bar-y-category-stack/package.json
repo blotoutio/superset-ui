@@ -1,7 +1,7 @@
 {
-  "name": "@blotoutio/plugin-chart-funnel",
-  "version": "1.0.2",
-  "description": "Superset Chart - Funnel",
+  "name": "@blotoutio/plugin-chart-bar-y-category-stack",
+  "version": "1.0.4",
+  "description": "Superset Chart - Bar Y Category Stack",
   "sideEffects": false,
   "main": "lib/index.js",
   "module": "esm/index.js",

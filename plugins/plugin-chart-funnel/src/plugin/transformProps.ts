@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { ChartProps, DataRecord, convertMetric } from '@superset-ui/core';
+import { ChartProps, DataRecord, getMetricLabel } from '@superset-ui/core';
 import { FunnelProps } from '../types';
 import { extractGroupbyLabel } from './utils/series';
 
@@ -50,71 +50,71 @@ export default function transformProps(chartProps: ChartProps): FunnelProps {
    * function during development with hot reloading, changes won't
    * be seen until restarting the development server.
    */
-  const { width, height, formData, queryData } = chartProps;
+  const { width, height, formData, queriesData } = chartProps;
   const { groupby, metric, boldText, headerFontSize, headerText } = formData;
-  const data: DataRecord[] = queryData.data || [];
+  const data: DataRecord[] = queriesData[0].data || [];
 
-  const { label: metricLabel } = convertMetric(metric);
+  const metricLabel = getMetricLabel(metric);
   const keys = data.map(datum => extractGroupbyLabel({ datum, groupby }));
   const transformedData = data.map(datum => {
-      return {value : datum[metricLabel] , name : extractGroupbyLabel({ datum, groupby })}
-    });
+    return { value: datum[metricLabel], name: extractGroupbyLabel({ datum, groupby }) };
+  });
   const echartOptions = {
     tooltip: {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c}"
+      trigger: 'item',
+      formatter: '{a} <br/>{b} : {c}',
     },
     toolbox: {
-        feature: {
-            dataView: {readOnly: false},
-            restore: {},
-            saveAsImage: {}
-        }
+      feature: {
+        dataView: { readOnly: false },
+        restore: {},
+        saveAsImage: {},
+      },
     },
     legend: {
-        data: keys
+      data: keys,
     },
 
     series: [
-        {
-            name:'Funnel chart',
-            type:'funnel',
-            left: '10%',
-            top: 60,
-            //x2: 80,
-            bottom: 60,
-            width: '80%',
-            // height: {totalHeight} - y - y2,
-            min: 0,
-            max: 100,
-            minSize: '0%',
-            maxSize: '100%',
-            sort: 'descending',
-            gap: 2,
-            label: {
-                show: true,
-                position: 'inside'
-            },
-            labelLine: {
-                length: 10,
-                lineStyle: {
-                    width: 1,
-                    type: 'solid'
-                }
-            },
-            itemStyle: {
-                borderColor: '#fff',
-                borderWidth: 1
-            },
-            emphasis: {
-                label: {
-                    fontSize: 20
-                }
-            },
-            data: transformedData
-        }
-    ]
-};
+      {
+        name: 'Funnel chart',
+        type: 'funnel',
+        left: '10%',
+        top: 60,
+        //x2: 80,
+        bottom: 60,
+        width: '80%',
+        // height: {totalHeight} - y - y2,
+        min: 0,
+        max: 100,
+        minSize: '0%',
+        maxSize: '100%',
+        sort: 'descending',
+        gap: 2,
+        label: {
+          show: true,
+          position: 'inside',
+        },
+        labelLine: {
+          length: 10,
+          lineStyle: {
+            width: 1,
+            type: 'solid',
+          },
+        },
+        itemStyle: {
+          borderColor: '#fff',
+          borderWidth: 1,
+        },
+        emphasis: {
+          label: {
+            fontSize: 20,
+          },
+        },
+        data: transformedData,
+      },
+    ],
+  };
 
   return {
     width,
@@ -123,6 +123,6 @@ export default function transformProps(chartProps: ChartProps): FunnelProps {
     // and now your control data, manipulated as needed, and passed through as props!
     boldText,
     headerFontSize,
-    headerText
+    headerText,
   };
 }

@@ -17,7 +17,7 @@
  * under the License.
  */
 import { t, validateNonEmpty } from '@superset-ui/core';
-import { ControlPanelConfig, sections } from '@superset-ui/chart-controls';
+import { ControlPanelConfig, sharedControls, sections } from '@superset-ui/chart-controls';
 
 const config: ControlPanelConfig = {
   /**
@@ -102,45 +102,75 @@ const config: ControlPanelConfig = {
       label: t('Query'),
       expanded: true,
       controlSetRows: [
-        ['metrics'],
-        ['adhoc_filters'],
+        ['metric'],
         ['groupby'],
-        ['series'],
-        ['row_limit'],
+        ['columns'],
+        ['adhoc_filters'],
         [
           {
-            name: 'contribution',
-            config: {
-              type: 'CheckboxControl',
-              label: t('Contribution'),
-              default: false,
-              description: t('Compute the contribution to the total'),
-            },
+            name: 'row_limit',
+            config: sharedControls.row_limit,
           },
         ],
       ],
     },
     {
-      label: t('Bar Chart Controls!'),
+      label: t('Bar Label Chart Controls!'),
       expanded: true,
       controlSetRows: [
         [
           {
-            name: 'x_axis_label',
+            name: 'rotate',
             config: {
-              type: 'TextControl',
-              label: t('X Axis Label'),
+              type: 'SelectControl',
+              freeForm: false,
+              label: 'Rotate',
+              choices: [
+                [10, 10],
+                [30, 30],
+                [45, 45],
+                [60, 60],
+                [90, 90],
+              ],
+              default: 90,
               renderTrigger: true,
-              default: '',
+              description: t('Rotate Label'),
             },
           },
+        ],
+        [
           {
-            name: 'y_axis_label',
+            name: 'align',
             config: {
-              type: 'TextControl',
-              label: t('Y Axis Label'),
+              type: 'SelectControl',
+              freeForm: false,
+              label: 'Align',
+              choices: [
+                ['left', 'left'],
+                ['center', 'center'],
+                ['right', 'right'],
+              ],
+              default: 'left',
               renderTrigger: true,
-              default: '',
+              description: t('Align'),
+            },
+          },
+        ],
+        [
+          {
+            name: 'vertical_align',
+            config: {
+              type: 'SelectControl',
+              freeForm: false,
+              label: 'Align',
+              choices: [
+                ['top', 'top'],
+                ['middle', 'middle'],
+                ['bottom', 'bottom'],
+              ],
+              default: 'top',
+              renderTrigger: true,
+              description: t('verticalAlign'),
             },
           },
         ],
@@ -177,14 +207,9 @@ const config: ControlPanelConfig = {
       ],
     },
   ],
-
   controlOverrides: {
     groupby: {
       validators: [validateNonEmpty],
-    },
-    series: {
-      label: t('Breakdowns'),
-      description: t('Defines how each series is broken down'),
     },
   },
 };

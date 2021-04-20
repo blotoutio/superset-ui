@@ -17,9 +17,9 @@
  * under the License.
  */
 import React, { useRef, useEffect, createRef } from 'react';
-import { styled } from '@superset-ui/core';
+import { styled, getSequentialSchemeRegistry } from '@superset-ui/core';
 import { ECharts, init } from 'echarts';
-import { FunnelProps, FunnelStylesProps } from './types';
+import { BarLabelRotationProps, BarLabelRotationStylesProps } from './types';
 
 // The following Styles component is a <div> element, which has been styled using Emotion
 // For docs, visit https://emotion.sh/docs/styled
@@ -28,9 +28,15 @@ import { FunnelProps, FunnelStylesProps } from './types';
 // imported from @superset-ui/core. For variables available, please visit
 // https://github.com/apache-superset/superset-ui/blob/master/packages/superset-ui-core/src/style/index.ts
 
-const Styles = styled.div<FunnelStylesProps>`
+const Styles = styled.div<BarLabelRotationStylesProps>`
   height: ${({ height }) => height};
   width: ${({ width }) => width};
+
+  h3 {
+    /* You can use your props to control CSS! */
+    font-size: ${({ theme, headerFontSize }) => theme.typography.sizes[headerFontSize]};
+    font-weight: ${({ theme, boldText }) => theme.typography.weights[boldText ? 'bold' : 'normal']};
+  }
 `;
 
 /**
@@ -41,7 +47,7 @@ const Styles = styled.div<FunnelStylesProps>`
  *  * FormData (your controls!) provided as props by transformProps.ts
  */
 
-export default function Funnel(props: FunnelProps) {
+export default function BarLabelRotation(props: BarLabelRotationProps) {
   // height and width are the height and width of the DOM element as it exists in the dashboard.
   // There is also a `data` prop, which is, of course, your DATA 🎉
   const { echartOptions, height, width } = props;
@@ -52,18 +58,32 @@ export default function Funnel(props: FunnelProps) {
   // Often, you just want to get a hold of the DOM and go nuts.
   // Here, you can do that with createRef, and the useEffect hook.
   useEffect(() => {
+    const colorScale = getSequentialSchemeRegistry().get(props.linearColorScheme);
     if (!rootElem.current) return;
     if (!chartRef.current) {
-      chartRef.current = init(rootElem.current);
+      chartRef.current = init(rootElem.current, 'null', { renderer: 'svg' });
     }
+    echartOptions.color = colorScale?.colors;
+
+    echartOptions.series.forEach((datum: any, key: any) => {
+      echartOptions.series[key]['label']['rotate'] = props.rotate;
+      echartOptions.series[key]['label']['align'] = props.align;
+      echartOptions.series[key]['label']['verticalAlign'] = props.verticalAlign;
+    });
+
+    echartOptions.legend.show = props.showLegend;
+    echartOptions.legend.type = props.legend;
+
+    let xaxisWidth = width;
+    if (echartOptions.legend.data.length > 0) {
+      xaxisWidth =
+        echartOptions.legend.data.length * (echartOptions.series[0]['data'].length * 4) * 10;
+    }
+    xaxisWidth = xaxisWidth < width ? width : xaxisWidth;
+    chartRef.current.resize({ width: xaxisWidth, height });
+
     chartRef.current.setOption(echartOptions, true);
   }, [echartOptions]);
-
-  useEffect(() => {
-    if (chartRef.current) {
-      chartRef.current.resize({ width, height });
-    }
-  }, [width, height]);
 
   return (
     <Styles
@@ -72,6 +92,6 @@ export default function Funnel(props: FunnelProps) {
       headerFontSize={props.headerFontSize}
       height={height}
       width={width}
-    />
+    ></Styles>
   );
 }
