@@ -1,6 +1,6 @@
 {
-  "name": "@superset-ui/core",
-  "version": "0.17.30",
+  "name": "@blotoutio/superset-ui-core",
+  "version": "1.0.1",
   "description": "Superset UI core",
   "sideEffects": false,
   "main": "lib/index.js",
@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apache-superset/superset-ui.git"
+    "url": "git+https://github.com/blotoutio/superset-ui.git"
   },
   "keywords": [
     "superset"
@@ -19,11 +19,11 @@
   "author": "Superset",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/apache-superset/superset-ui/issues"
+    "url": "https://github.com/blotoutio/superset-ui/issues"
   },
-  "homepage": "https://github.com/apache-superset/superset-ui#readme",
+  "homepage": "https://github.com/blotoutio/superset-ui#readme",
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "@types/fetch-mock": "^7.3.3",

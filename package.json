@@ -140,7 +140,7 @@
     "@types/react-bootstrap/@types/react": "^16.14.2"
   },
   "engines": {
-    "node": "^14.15.0",
+    "node": ">=14.15.0",
     "npm": "^7.5.4",
     "yarn": ">=1.13.0"
   },
@@ -154,12 +154,6 @@
     "last 3 safari versions",
     "last 3 edge versions"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "./scripts/commitlint.js HUSKY_GIT_PARAMS"
-    }
-  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,md}": [
       "prettier --write"
