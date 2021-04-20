@@ -18,14 +18,14 @@
  */
 import { QueryFormData, supersetTheme } from '@superset-ui/core';
 
-export interface BarRichTextStylesProps {
+export interface BarYCategoryStackStylesProps {
   height: number;
   width: number;
   headerFontSize: keyof typeof supersetTheme.typography.sizes;
   boldText: boolean;
 }
 
-interface BarRichTextCustomizeProps {
+interface BarYCategoryStackCustomizeProps {
   headerText: string;
   linearColorScheme: string;
   xAxisLabel: string;
@@ -34,12 +34,12 @@ interface BarRichTextCustomizeProps {
   showLegend: boolean;
 }
 
-export type BarRichTextQueryFormData = QueryFormData &
-  BarRichTextStylesProps &
-  BarRichTextCustomizeProps;
+export type BarYCategoryStackQueryFormData = QueryFormData &
+  BarYCategoryStackStylesProps &
+  BarYCategoryStackCustomizeProps;
 
-export type BarRichTextProps = BarRichTextStylesProps &
-  BarRichTextCustomizeProps & {
+export type BarYCategoryStackProps = BarYCategoryStackStylesProps &
+  BarYCategoryStackCustomizeProps & {
     echartOptions: any;
     // add typing here for the props you pass in from transformProps.ts!
   };

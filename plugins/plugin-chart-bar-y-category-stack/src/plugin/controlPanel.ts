@@ -17,7 +17,7 @@
  * under the License.
  */
 import { t, validateNonEmpty } from '@superset-ui/core';
-import { ControlPanelConfig, sections } from '@superset-ui/chart-controls';
+import { ControlPanelConfig, sharedControls, sections } from '@superset-ui/chart-controls';
 
 const config: ControlPanelConfig = {
   /**
@@ -102,26 +102,20 @@ const config: ControlPanelConfig = {
       label: t('Query'),
       expanded: true,
       controlSetRows: [
-        ['metrics'],
-        ['adhoc_filters'],
+        ['metric'],
         ['groupby'],
-        ['series'],
-        ['row_limit'],
+        ['columns'],
+        ['adhoc_filters'],
         [
           {
-            name: 'contribution',
-            config: {
-              type: 'CheckboxControl',
-              label: t('Contribution'),
-              default: false,
-              description: t('Compute the contribution to the total'),
-            },
+            name: 'row_limit',
+            config: sharedControls.row_limit,
           },
         ],
       ],
     },
     {
-      label: t('Bar Chart Controls!'),
+      label: t('Bar Y Category Controls!'),
       expanded: true,
       controlSetRows: [
         [
@@ -182,9 +176,8 @@ const config: ControlPanelConfig = {
     groupby: {
       validators: [validateNonEmpty],
     },
-    series: {
-      label: t('Breakdowns'),
-      description: t('Defines how each series is broken down'),
+    row_limit: {
+      default: 100,
     },
   },
 };

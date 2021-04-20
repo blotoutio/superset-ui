@@ -29,12 +29,10 @@ interface FunnelCustomizeProps {
   headerText: string;
 }
 
-export type FunnelQueryFormData = QueryFormData &
-  FunnelStylesProps &
-  FunnelCustomizeProps;
+export type FunnelQueryFormData = QueryFormData & FunnelStylesProps & FunnelCustomizeProps;
 
 export type FunnelProps = FunnelStylesProps &
-FunnelCustomizeProps & {
-    echartOptions: object;
+  FunnelCustomizeProps & {
+    echartOptions: any;
     // add typing here for the props you pass in from transformProps.ts!
   };

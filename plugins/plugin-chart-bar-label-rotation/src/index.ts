@@ -16,30 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { QueryFormData, supersetTheme } from '@superset-ui/core';
-
-export interface BarRichTextStylesProps {
-  height: number;
-  width: number;
-  headerFontSize: keyof typeof supersetTheme.typography.sizes;
-  boldText: boolean;
-}
-
-interface BarRichTextCustomizeProps {
-  headerText: string;
-  linearColorScheme: string;
-  xAxisLabel: string;
-  yAxisLabel: string;
-  legend: string;
-  showLegend: boolean;
-}
-
-export type BarRichTextQueryFormData = QueryFormData &
-  BarRichTextStylesProps &
-  BarRichTextCustomizeProps;
-
-export type BarRichTextProps = BarRichTextStylesProps &
-  BarRichTextCustomizeProps & {
-    echartOptions: any;
-    // add typing here for the props you pass in from transformProps.ts!
-  };
+// eslint-disable-next-line import/prefer-default-export
+export { default as BarLabelRotationChartPlugin } from './plugin';
+/**
+ * Note: this file exports the default export from BarLabelRotation.tsx.
+ * If you want to export multiple visualization modules, you will need to
+ * either add additional plugin folders (similar in structure to ./plugin)
+ * OR export multiple instances of `ChartPlugin` extensions in ./plugin/index.ts
+ * which in turn load exports from BarLabelRotation.tsx
+ */

@@ -18,28 +18,29 @@
  */
 import { QueryFormData, supersetTheme } from '@superset-ui/core';
 
-export interface BarRichTextStylesProps {
+export interface BarLabelRotationStylesProps {
   height: number;
   width: number;
   headerFontSize: keyof typeof supersetTheme.typography.sizes;
   boldText: boolean;
 }
 
-interface BarRichTextCustomizeProps {
+interface BarLabelRotationCustomizeProps {
   headerText: string;
   linearColorScheme: string;
-  xAxisLabel: string;
-  yAxisLabel: string;
   legend: string;
+  rotate: number;
+  align: string;
+  verticalAlign: string;
   showLegend: boolean;
 }
 
-export type BarRichTextQueryFormData = QueryFormData &
-  BarRichTextStylesProps &
-  BarRichTextCustomizeProps;
+export type BarLabelRotationQueryFormData = QueryFormData &
+  BarLabelRotationStylesProps &
+  BarLabelRotationCustomizeProps;
 
-export type BarRichTextProps = BarRichTextStylesProps &
-  BarRichTextCustomizeProps & {
+export type BarLabelRotationProps = BarLabelRotationStylesProps &
+  BarLabelRotationCustomizeProps & {
     echartOptions: any;
     // add typing here for the props you pass in from transformProps.ts!
   };

@@ -1,6 +1,6 @@
 {
-  "name": "@superset-ui/plugin-chart-bar-rich-text",
-  "version": "0.0.0",
+  "name": "@blotoutio/plugin-chart-bar-rich-text",
+  "version": "1.0.6",
   "description": "Superset Chart - Bar Rich Text",
   "sideEffects": false,
   "main": "lib/index.js",
@@ -11,23 +11,20 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apache-superset/superset-ui.git"
+    "url": "git+https://github.com/blotoutio/superset-ui.git"
   },
   "keywords": [
     "superset"
   ],
-  "author": "Superset",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/apache-superset/superset-ui/issues"
-  },
-  "homepage": "https://github.com/apache-superset/superset-ui#readme",
+  "author": "Blotout",
+  "license": "MIT",
+  "homepage": "https://github.com/blotoutio/superset-ui#readme",
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@superset-ui/core": "^0.15.2",
-    "@superset-ui/chart-controls": "^0.15.2"
+    "@superset-ui/chart-controls": "^0.17.0",
+    "@superset-ui/core": "^0.17.0"
   },
   "peerDependencies": {
     "react": "^16.13.1"

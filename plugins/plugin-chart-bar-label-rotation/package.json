@@ -1,7 +1,7 @@
 {
-  "name": "@blotoutio/plugin-chart-funnel",
+  "name": "@blotoutio/plugin-chart-bar-label-rotation",
   "version": "1.0.2",
-  "description": "Superset Chart - Funnel",
+  "description": "Superset Chart - Bar Label Rotation",
   "sideEffects": false,
   "main": "lib/index.js",
   "module": "esm/index.js",
